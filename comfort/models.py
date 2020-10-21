@@ -10,7 +10,7 @@ class Cafe(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'cafe'
 
 
@@ -24,7 +24,7 @@ class Convenience(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'convenience'
 
 
@@ -38,7 +38,7 @@ class Culture(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'culture'
 
 
@@ -52,7 +52,7 @@ class Daiso(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'daiso'
 
 
@@ -66,7 +66,7 @@ class Fastfood(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'fastfood'
 
 
@@ -80,7 +80,7 @@ class Health(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'health'
 
 
@@ -94,7 +94,7 @@ class Hospital(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'hospital'
 
 
@@ -108,7 +108,7 @@ class Laundry(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'laundry'
 
 
@@ -122,5 +122,5 @@ class Market(models.Model):
     con_longit = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'market'

@@ -31,7 +31,7 @@ class Officetels(models.Model):
     gym_num = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'officetels'
 
 
@@ -64,7 +64,7 @@ class OneTwoRoom(models.Model):
     gym_num = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'one_two_room'
 
 
@@ -99,7 +99,7 @@ class Villa(models.Model):
     gym_num = models.BigIntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'villa'
 
 
@@ -108,5 +108,5 @@ class Speed(models.Model):
     speed = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        # managed = False
         db_table = 'speed'
