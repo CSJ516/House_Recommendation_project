@@ -1,0 +1,31 @@
+{% extends 'base.html'%}
+{% block title %}글목록{% endblock title %}
+{% block content %}
+<h1>글목록</h1>
+<table class = 'table'>
+    <thead>
+        <tr>
+            <th>주소</th>
+            <th>전월세</th>
+            <th>보증금</th>
+            <th>위도</th>
+            <th>경도</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for officetels in solution %}
+            <tr>
+                <td>{{officetels.address}}</td>
+                <td>{{officetels.rent}}</td>
+                <td>{{officetels.deposit}}</td>
+                <td>{{officetels.latitude}}</td>
+                <td>{{officetels.longitude}}</td>
+                
+            </tr>
+        {% endfor %}
+    </tbody>
+
+
+</table>
+{% endblock content %}
