@@ -8,19 +8,23 @@
             <th>주소</th>
             <th>전월세</th>
             <th>보증금</th>
+            <th>세</th>
             <th>위도</th>
             <th>경도</th>
         </tr>
     </thead>
 
     <tbody>
-        {% for officetels in solution %}
+        {% for info in solution %}
             <tr>
-                <td>{{officetels.address}}</td>
-                <td>{{officetels.rent}}</td>
-                <td>{{officetels.deposit}}</td>
-                <td>{{officetels.latitude}}</td>
-                <td>{{officetels.longitude}}</td>
+                <td>
+                   {{info.address}}</a> <!-- DETAIL과 연결하는 부분-->
+                </td>
+                <td>{{info.rent}}</td>
+                <td>{{info.deposit}}</td>
+                <td>{{info.pay}}</td>
+                <td>{{info.latitude}}</td>
+                <td>{{info.longitude}}</td>
                 
             </tr>
         {% endfor %}
