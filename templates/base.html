@@ -15,11 +15,10 @@
         <!--로그인한 사용자 :로그아웃, 제품목록 / 로그아웃한 사용자 : 가입, 로그인 / 공통 : 제품목록-->
         <nav>
             <a href="{% url 'home' %}"> HOME </a>
-            <a href='/admin'>관리자</a>
-            <a href = "{% url 'house:solution' %}">  LIST  </a>
         </nav>
 {% block content %}
 {% endblock content %}
-</div>
+    </div>
+
 </body>
 </html>

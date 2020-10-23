@@ -8,15 +8,15 @@ from house.models import Officetels, OneTwoRoom, Villa, Speed
 
 aa = Officetels
 def solution(request):
-    input_rent = '전세'
-    input_deposit = '10000'
-    input_pay = 0
+    input_rent = request.GET['input_rent']
+    input_deposit = request.GET['q1']
+    input_pay = request.GET['q2']
     job = ['37.5901684571627', '127.05156387144']
     con_0 = 'fast_num'
     con_1 = 'mart_num'
     con_2 = 'cafe_num'
     gu = '0.24069938698647905'
-    table = 'officetels'
+    table = request.GET['table']
     stand_0 = 2
     stand_1 = 2
     stand_2 = 3

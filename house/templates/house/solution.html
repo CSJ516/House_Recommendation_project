@@ -1,6 +1,18 @@
 {% extends 'base.html'%}
 {% block title %}글목록{% endblock title %}
 {% block content %}
+
+<div id="map" style="width:500px;height:400px;"></div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71266e4e330a61ec560856434137609d"></script>
+<script>
+    var container = document.getElementById('map');
+    var options = {
+        center: new kakao.maps.LatLng(37.48294074, 126.79504352),
+        level: 3
+    };
+    var map = new kakao.maps.Map(container, options);
+</script>
+
 <h1>글목록</h1>
 <table class = 'table'>
     <thead>
