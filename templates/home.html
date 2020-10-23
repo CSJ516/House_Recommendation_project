@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}HOME{% endblock title %}
 {% block content %}
 <div>
@@ -26,7 +25,6 @@
         <br>
         직장주소 :
         <input type='search' name='q3' value='{{ q3 }}'>
-
         <ul id="id_tags">
         <li>
             <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="병원">
@@ -49,12 +47,9 @@
              실내운동시설
         </li>
         </ul>
-
         <button type="submit"> 검색</button> 
     </form>
-
 </div>
-
 <script>
     function a(){
         document.getElementById('rent').style.display='none';
@@ -63,7 +58,6 @@
         document.getElementById('rent').style.display='block';
     }
 </script>
-
 <script type="text/javascript">
     var maxCount = 3;								// 카운트 최대값은 2
     var count = 0;   								// 카운트, 0으로 초기화 설정
