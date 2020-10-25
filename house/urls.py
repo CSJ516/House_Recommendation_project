@@ -5,5 +5,6 @@ app_name = 'house'
 
 urlpatterns = [
     path('solution', views.solution, name='solution'),
- 
+    path('detail', views.detail, name='detail'),
+
 ]

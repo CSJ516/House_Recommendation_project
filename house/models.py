@@ -111,7 +111,6 @@ class Speed(models.Model):
         # managed = False
         db_table = 'speed'
 
-
 class Cafe(models.Model):
     gid = models.AutoField(primary_key=True)
     house_type = models.CharField(max_length=254, blank=True, null=True)
@@ -124,7 +123,6 @@ class Cafe(models.Model):
     class Meta:
         # managed = False
         db_table = 'cafe'
-
 
 class Convenience(models.Model):
     gid = models.AutoField(primary_key=True)

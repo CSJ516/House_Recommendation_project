@@ -22,6 +22,8 @@
                 <th>전월세</th>
                 <th>보증금</th>
                 <th>세</th>
+                <th>거래년도</th>
+                <th>면적</th>            
                 <th>위도</th>
                 <th>경도</th>
             </tr>
@@ -31,18 +33,105 @@
             {% for info in solution %}
                 <tr>
                     <td>
-                    {{info.address}}</a> <!-- DETAIL과 연결하는 부분-->
+                    <!-- <span onclick='req("{{info.criteria}}", "{{t1}}");location.href="{% url 'home' %}"'>{{info.address}}</span>  -->
+                    <span onclick='req("{{info.criteria}}", "{{t1}}")'>{{info.address}}</span> 
                     </td>
                     <td>{{info.rent}}</td>
                     <td>{{info.deposit}}</td>
                     <td>{{info.pay}}</td>
+                    <td>{{info.contract}}</td>
+                    <td>{{info.size}}</td>
                     <td>{{info.latitude}}</td>
                     <td>{{info.longitude}}</td>
-                    
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+                
+{{job1}}
+{{job2}}
+<input type='hidden' id="tableName" value='{{t1}}'>
+
+<div id = 'dataView'>
+    {% if con_detail_0 %}
+        {% for de0 in con_detail_0 %}
+        <tr>
+            <td>{{de0.con_name}}</td>
+            <td>{{de0.con_addres}}</td>
+            <td>{{de0.con_latitu}}</td>
+            <td>{{de0.con_longit}}</td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    {% if con_detail_1 %}
+        {% for de1 in con_detail_1 %}
+        <tr>
+            <td>{{de1.con_name}}</td>
+            <td>{{de1.con_addres}}</td>
+            <td>{{de1.con_latitu}}</td>
+            <td>{{de1.con_longit}}</td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+
+    {% if con_detail_2 %}
+    {% for de2 in con_detail_2 %}
+        <tr>
+            <td>{{de2.con_name}}</td>
+            <td>{{de2.con_addres}}</td>
+            <td>{{de2.con_latitu}}</td>
+            <td>{{de2.con_longit}}</td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+
+</div>
+
+
+<script>
+    function req(v1, v2){
+        // alert(document.getElementById('tableName').value);
+    // }
+    // function loadDoc() {
+        var xhttp = new XMLHttpRequest();
+        console.log(1);
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                document.getElementById("dataView").innerHTML = this.responseText; 
+                // <thead>
+                //         <tr>
+                //             <th>이름</th>
+                //             <th>주소</th>          
+                //             <th>위도</th>
+                //             <th>경도</th>
+                //         </tr>
+                //     </thead>
+
+                //     <tbody>
+                //         {% for de in con_detail_0 %}
+                //             <tr>
+                //                 <td>{{de.con_name}}</td>
+                //                 <td>{{de.con_addres}}</td>
+                //                 <td>{{de.con_latitu}}</td>
+                //                 <td>{{de.con_longit}}</td>
+                //             </tr>
+                //         {% endfor %}
+                //     </tbody>
+                // </table>
+            }
+        };
+        console.log(2);
+        // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // criteria = document.getElementById('criteria').value;
+        // tableName = document.getElementById('tableName').value;
+        xhttp.open("GET", "detail?criteria="+v1 + "&tableName="+v2, true);
+        console.log(3);
+        xhttp.send();
+    }
+    
+</script>
+
 
 {% endblock content %}
