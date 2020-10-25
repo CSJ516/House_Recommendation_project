@@ -1,55 +1,55 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block title %}HOME{% endblock title %}
 {% block content %}
+
 <div>
-    <form action="house/solution" method='GET'>
+    <form action="{% url 'house:solution' %}" method='GET'>
         {% csrf_token %}
         <br>
         부동산 유형 :
-        <input type="radio" name="table" value="officetels">오피스텔
-        <input type="radio" name="table" value="villa">빌라
-        <input type="radio" name="table" value="one_two_room">단독다가구 
+        <input type="radio"  name="table" value="officetels">오피스텔
+        <input type="radio"  name="table" value="villa">빌라
+        <input type="radio"  name="table" value="one_two_room">단독다가구 
         <br>
         전/월세 :
-        <input type="radio" name="input_rent" value="전세" onclick='a()'>전세
-        <input type="radio" name="input_rent" value="월세" onclick='b()'>월세
+        <input type="radio"  name="input_rent" value="전세" onclick='a()'>전세
+        <input type="radio"  name="input_rent" value="월세" onclick='b()'>월세
         <br>
         보증금 :
-        <input type='search' name='q1' value='{{ q1 }}'>
+        <input type='search' id="q1" name='q1' value='{{ q1 }}'>
         <div id="rent" style='display:none'>
             <br>
             월세 :
-            <input type='search' name='q2' value='{{ q2 }}'>
+            <input type='search' id="q2" name='q2' value='{{ q2 }}'>
         </div>
         <br>
         직장주소 :
-        <input type='search' name='q3' value='{{ q3 }}'>
+        <input type='search' id='q3' name='q3' value='{{ q3 }}'>
         <ul id="id_tags">
         <li>
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="병원">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="병원">
              병원
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="마트">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="마트">
              마트
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="패스트푸드">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="패스트푸드">
              패스트푸드
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="카페">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="카페">
              카페
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="문화시설">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="문화시설">
              문화시설
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="편의점">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="편의점">
              편의점
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="세탁소">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="세탁소">
              세탁소
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="다이소">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="다이소">
              다이소
-            <input onclick="CountChecked(this)" type="checkbox" name="con_input" value="실내운동시설">
+            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="실내운동시설">
              실내운동시설
         </li>
         </ul>
         <button type="submit"> 검색</button> 
     </form>
 </div>
+
 <script>
     function a(){
         document.getElementById('rent').style.display='none';
@@ -58,6 +58,7 @@
         document.getElementById('rent').style.display='block';
     }
 </script>
+
 <script type="text/javascript">
     var maxCount = 3;								// 카운트 최대값은 2
     var count = 0;   								// 카운트, 0으로 초기화 설정
@@ -76,4 +77,3 @@
 </script>
 
 {% endblock content %}
-
