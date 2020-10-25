@@ -2,7 +2,7 @@ from django.db import connection
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from house.models import Officetels, OneTwoRoom, Villa, Speed
+from house.models import Officetels, OneTwoRoom, Villa, Speed, Cafe, Convenience, Culture, Daiso, Fastfood, Health, Hospital, Laundry, Market
 import psycopg2
 import requests
 from urllib.parse import urlparse
@@ -173,27 +173,30 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
         
     
 def solution(request):
-    table = request.GET['table']
-    input_rent = request.GET['input_rent']
-    input_deposit = request.GET['q1']
-    if request.GET['q2']:
-        input_pay = request.GET['q2']
-    else:
-        input_pay = 0
-    input_con = request.GET.getlist('con_input')
-    address = request.GET['q3']
-    print(table, input_rent, input_pay, input_deposit, input_con, address)
+    try:
+        table = request.GET['table']
+        input_rent = request.GET['input_rent']
+        input_deposit = request.GET['q1']
+        if request.GET['q2']:
+            input_pay = request.GET['q2']
+        else:
+            input_pay = 0
+        input_con = request.GET.getlist('con_input')
+        address = request.GET['q3']
+        print(table, input_rent, input_pay, input_deposit, input_con, address)
 
-    global data
-    print('condition')
-    # 집유형에 따라 해당되는 {table} 도출
-    if table == 'officetels':
-        data = Officetels
-    elif table == 'villa':
-        data = Villa
-    elif table == 'one_two_room':
-        data = OneTwoRoom
-    gu, job = latlon(address)
-    return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data)
+        global data
+        print('condition')
+        # 집유형에 따라 해당되는 {table} 도출
+        if table == 'officetels':
+            data = Officetels
+        elif table == 'villa':
+            data = Villa
+        elif table == 'one_two_room':
+            data = OneTwoRoom
+        gu, job = latlon(address)
+        return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data)
+    except:
+        return render(request, 'home.html')
               
 

@@ -2,7 +2,7 @@
 {% block content %}
 
 <div>
-    <form action="{% url 'house:solution' %}" method='GET'>
+    <form name="searchForm" action="{% url 'house:solution' %}" method='GET'>
         {% csrf_token %}
         <br>
         부동산 유형 :
@@ -46,7 +46,7 @@
              실내운동시설
         </li>
         </ul>
-        <button type="submit"> 검색</button> 
+        <button onclick="ConditionCheck()"> 검색</button> 
     </form>
 </div>
 
