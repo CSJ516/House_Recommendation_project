@@ -25,6 +25,7 @@ SECRET_KEY = '3kferdd&7y%#bi#=rdutn+^lu7)%br8pk#)0^bsnl3#+7z-d5o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = []
 
 
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'house',
-    'comfort',
 ]
 
 MIDDLEWARE = [
