@@ -1,42 +1,48 @@
-{% extends 'base.html'%}
-{% block title %}글목록{% endblock title %}
 {% block content %}
-<h1>글목록</h1>
-<table class = 'table'>
-    <thead>
-        <tr>
-            <th>주소</th>
-            <th>전월세</th>
-            <th>보증금</th>
-            <th>세</th>
-            <th>거래년도</th>
-            <th>면적</th>            
-            <th>위도</th>
-            <th>경도</th>
+    
+{% include 'home.html' %}
 
+<div id="map" style="width:500px;height:400px;"></div>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=71266e4e330a61ec560856434137609d"></script>
+<script>
+    var container = document.getElementById('map');
+    var options = {
+        center: new kakao.maps.LatLng(37.48294074, 126.79504352),
+        level: 3
+    };
+    var map = new kakao.maps.Map(container, options);
+</script>
 
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for info in solution %}
+<div>
+    <h1>검색결과</h1>
+    <table class = 'table'>
+        <thead>
             <tr>
-                <td>
-                   <!-- <span onclick='req("{{info.criteria}}", "{{t1}}");location.href="{% url 'home' %}"'>{{info.address}}</span>  -->
-                   <span onclick='req("{{info.criteria}}", "{{t1}}")'>{{info.address}}</span> 
-                </td>
-                <td>{{info.rent}}</td>
-                <td>{{info.deposit}}</td>
-                <td>{{info.pay}}</td>
-                <td>{{info.contract}}</td>
-                <td>{{info.size}}</td>
-                <td>{{info.latitude}}</td>
-                <td>{{info.longitude}}</td>
-                
+                <th>주소</th>
+                <th>전월세</th>
+                <th>보증금</th>
+                <th>세</th>
+                <th>위도</th>
+                <th>경도</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for info in solution %}
+                <tr>
+                    <td>
+                        <span onclick='req("{{info.criteria}}", "{{t1}}")'>{{info.address}}</span> 
+                    </td>
+                    <td>{{info.rent}}</td>
+                    <td>{{info.deposit}}</td>
+                    <td>{{info.pay}}</td>
+                    <td>{{info.latitude}}</td>
+                    <td>{{info.longitude}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {{job1}}
 {{job2}}
 <input type='hidden' id="tableName" value='{{t1}}'>
@@ -64,7 +70,7 @@
     {% endif %}
 
     {% if con_detail_2 %}
-    {% for de2 in con_detail_2 %}
+        {% for de2 in con_detail_2 %}
         <tr>
             <td>{{de2.con_name}}</td>
             <td>{{de2.con_addres}}</td>
@@ -88,26 +94,6 @@
             if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText);
                 document.getElementById("dataView").innerHTML = this.responseText; 
-                // <thead>
-                //         <tr>
-                //             <th>이름</th>
-                //             <th>주소</th>          
-                //             <th>위도</th>
-                //             <th>경도</th>
-                //         </tr>
-                //     </thead>
-
-                //     <tbody>
-                //         {% for de in con_detail_0 %}
-                //             <tr>
-                //                 <td>{{de.con_name}}</td>
-                //                 <td>{{de.con_addres}}</td>
-                //                 <td>{{de.con_latitu}}</td>
-                //                 <td>{{de.con_longit}}</td>
-                //             </tr>
-                //         {% endfor %}
-                //     </tbody>
-                // </table>
             }
         };
         console.log(2);

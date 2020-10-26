@@ -227,28 +227,28 @@ def detail(request):
 
 
 def solution(request):
-    try:
-        table = request.GET['table']
-        input_rent = request.GET['input_rent']
-        input_deposit = request.GET['q1']
-        if request.GET['q2']:
-            input_pay = request.GET['q2']
-        else:
-            input_pay = 0
-        input_con = request.GET.getlist('con_input')
-        address = request.GET['q3']
-        print(table, input_rent, input_pay, input_deposit, input_con, address)
+    # try:
+    table = request.GET['table']
+    input_rent = request.GET['input_rent']
+    input_deposit = request.GET['q1']
+    if request.GET['q2']:
+        input_pay = request.GET['q2']
+    else:
+        input_pay = 0
+    input_con = request.GET.getlist('con_input')
+    address = request.GET['q3']
+    print(table, input_rent, input_pay, input_deposit, input_con, address)
 
-        global data
-        print('condition')
-        # 집유형에 따라 해당되는 {table} 도출
-        if table == 'officetels':
-            data = Officetels
-        elif table == 'villa':
-            data = Villa
-        elif table == 'one_two_room':
-            data = OneTwoRoom
-        gu, job = latlon(address)
-        return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data)
-    except:
-        return render(request,'home.html')
+    global data
+    print('condition')
+    # 집유형에 따라 해당되는 {table} 도출
+    if table == 'officetels':
+        data = Officetels
+    elif table == 'villa':
+        data = Villa
+    elif table == 'one_two_room':
+        data = OneTwoRoom
+    gu, job = latlon(address)
+    return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data)
+    # except:
+    #     return render(request,'home.html')

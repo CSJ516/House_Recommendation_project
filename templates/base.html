@@ -8,6 +8,25 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        function ConditionCheck() {
+            var table = $('input[name="table"]:checked').val();
+            var input_rent = $('input[name="input_rent"]:checked').val();
+            var q1 = $('#q1').val();
+            //var q2 = $('#q2').val();
+            var q3 = $('#q3').val();
+            var con_input = [];
+                $('input[name="con_input"]:checked').each(function(i){
+                    con_input.push($(this).val());
+                });
+            if(!table || !input_rent || !q1 || !q3 || !con_input) {
+                alert('조건을 모두 입력해주세요.');
+            }else {
+                searchForm.submit();
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -15,11 +34,10 @@
         <!--로그인한 사용자 :로그아웃, 제품목록 / 로그아웃한 사용자 : 가입, 로그인 / 공통 : 제품목록-->
         <nav>
             <a href="{% url 'home' %}"> HOME </a>
-            <a href='/admin'>관리자</a>
-            <a href = "{% url 'house:solution' %}">  LIST  </a>
         </nav>
 {% block content %}
 {% endblock content %}
-</div>
+    </div>
+
 </body>
 </html>
