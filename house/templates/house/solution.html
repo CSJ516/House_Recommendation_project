@@ -39,32 +39,6 @@
     {% endfor %}
 </div>
 
-{% comment %} 편의시설1 위도,경도 {% endcomment %}
-<div id="con_detail_0_lat" style="display: none">
-    {% for con in con_detail_0 %}
-        {{ con.con_latitu }},
-    {% endfor %}
-</div>
-<div id="con_detail_0_lng" style="display: none">
-    {% for con in con_detail_0 %}
-        {{ con.con_longit }},
-    {% endfor %}
-</div>
-
-{% comment %} 편의시설2 위도,경도 {% endcomment %}
-<div id="con_detail_1_lat" style="display: none">
-    {% for con in con_detail_1 %}
-        {{ con.con_latitu }},
-    {% endfor %}
-</div>
-<div id="con_detail_1_lng" style="display: none">
-    {% for con in con_detail_1 %}
-        {{ con.con_longit }},
-    {% endfor %}
-</div>
-
-
-
 <script>
 // <script type="text/javascript">
 var list_lat = document.getElementById("facility_lat").innerText.split(',');
