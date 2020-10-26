@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import re
 
 def latlon(address):
-    conn_string = "host='localhost' dbname ='house' user='postgres' password='1111'"
+    conn_string = "host='localhost' dbname ='last_projext' user='postgres' password='1111'"
     conn = psycopg2.connect(conn_string)
     cur = conn.cursor()
 
