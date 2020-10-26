@@ -191,7 +191,6 @@ function changeMarker(type){
                 <th>경도</th>
             </tr>
         </thead>
-
         <tbody>
             {% for info in solution %}
                 <tr>
@@ -239,7 +238,7 @@ function changeMarker(type){
     {% endif %}
 
     {% if con_detail_2 %}
-    {% for de2 in con_detail_2 %}
+        {% for de2 in con_detail_2 %}
         <tr>
             <td>{{de2.con_name}}</td>
             <td>{{de2.con_addres}}</td>
@@ -263,26 +262,6 @@ function changeMarker(type){
             if (this.readyState == 4 && this.status == 200) {
                 console.log(this.responseText);
                 document.getElementById("dataView").innerHTML = this.responseText; 
-                // <thead>
-                //         <tr>
-                //             <th>이름</th>
-                //             <th>주소</th>          
-                //             <th>위도</th>
-                //             <th>경도</th>
-                //         </tr>
-                //     </thead>
-
-                //     <tbody>
-                //         {% for de in con_detail_0 %}
-                //             <tr>
-                //                 <td>{{de.con_name}}</td>
-                //                 <td>{{de.con_addres}}</td>
-                //                 <td>{{de.con_latitu}}</td>
-                //                 <td>{{de.con_longit}}</td>
-                //             </tr>
-                //         {% endfor %}
-                //     </tbody>
-                // </table>
             }
         };
         console.log(2);
