@@ -1,7 +1,5 @@
 {% block content %}
-    
 {% include 'home.html' %}
-
 <!-- <div id="map" style="width:100%;height:500px;"></div> -->
 <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66b844040bca20e5883ec6ced3f59ede"></script> -->
 <div id="mapwrap"> 
@@ -14,19 +12,22 @@
                 <span class="ico_comm ico_house"></span>
                 부동산
             </li>
-            <li id="storeMenu" onclick="changeMarker('store')">
+            <li id="hospitalMenu" onclick="condataRead('hospital')">
                 <span class="ico_comm ico_store"></span>
-                편의점
+                병원
             </li>
-            <li id="carparkMenu" onclick="changeMarker('carpark')">
-                <span class="ico_comm ico_carpark"></span>
-                주차장
+            <li id="martMenu" onclick="condataRead2('mart')">
+                <span class="ico_comm ico_store"></span>
+                마트
+            </li>
+            <li id="cafeMenu" onclick="condataRead3('cafe')">
+                <span class="ico_comm ico_store"></span>
+                카페
             </li>
         </ul>
     </div>
 </div>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66b844040bca20e5883ec6ced3f59ede"></script>
-
 {% comment %} 부동산 위도,경도 {% endcomment %}
 <div id="facility_lat" style="display: none">
     {% for fac in solution %}
@@ -38,7 +39,6 @@
         {{ fac.longitude }},
     {% endfor %}
 </div>
-
 <script>
 // <script type="text/javascript">
 var list_lat = document.getElementById("facility_lat").innerText.split(',');
@@ -54,12 +54,15 @@ for(var idx=0; idx<list_lat.length; idx++){
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
     mapOption = { 
         center: new kakao.maps.LatLng({{job_1}}, {{job_2}}), // 지도의 중심좌표 
-        level: 3 // 지도의 확대 레벨 
+        level: 5 // 지도의 확대 레벨 
     }; 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 // 부동산 마커가 표시될 좌표 배열입니다
-var markerImageSrc = 'https://postfiles.pstatic.net/MjAyMDEwMjNfNzkg/MDAxNjAzNDQxMTc5NDQ4.SWSVcM-uLk3cwhy4KO4nI9RwL1dwszjxd0wzRmEZQCkg.rP2t_ejqGeoTGjHK0ONS9mdDv3MqaZ8oUk4Q5Md1Jz0g.PNG.snrnrp2004/%EC%BA%A1%EC%B2%98-removebg-preview.png?type=w773';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
-    houseMarkers = [], // 부동산 마커 객체를 가지고 있을 배열입니다
+var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png'
+houseMarkers = []; // 부동산 마커 객체를 가지고 있을 배열입니다
+hospitalMarkers = [];  //********************
+martMarkers = [];  //********************
+cafeMarkers = [];
 createhouseMarkers(); // 부동산 마커를 생성하고 부동산 마커 배열에 추가합니다
 changeMarker('house'); // 지도에 부동산 마커가 보이도록 설정합니다    
 // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
@@ -78,7 +81,7 @@ function createMarker(position, image) {
 // 부동산 마커를 생성하고 부동산 마커 배열에 추가하는 함수입니다
 function createhouseMarkers() {
     for (var i = 0; i < housePositions.length; i++) {  
-        var imageSize = new kakao.maps.Size(100, 100),
+        var imageSize = new kakao.maps.Size(22, 26),
             imageOptions = {  
                 spriteOrigin: new kakao.maps.Point(10,0),    
                 spriteSize: new kakao.maps.Size(36,98)  
@@ -96,9 +99,9 @@ function sethouseMarkers(map) {
         houseMarkers[i].setMap(map);
     }        
 }
-// 편의점 마커를 생성하고 편의점 마커 배열에 추가하는 함수입니다
-function createStoreMarkers() {
-    for (var i = 0; i < storePositions.length; i++) {
+// 마트 마커를 생성하고 마트 마커 배열에 추가하는 함수입니다
+function createmartMarkers() {
+    for (var i = 0; i < martPositions.length; i++) {
         var imageSize = new kakao.maps.Size(22, 26),
             imageOptions = {   
                 spriteOrigin: new kakao.maps.Point(10, 36),    
@@ -106,20 +109,20 @@ function createStoreMarkers() {
             };       
         // 마커이미지와 마커를 생성합니다
         var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-            marker = createMarker(storePositions[i], markerImage);  
-        // 생성된 마커를 편의점 마커 배열에 추가합니다
-        storeMarkers.push(marker);    
+            marker = createMarker(martPositions[i], markerImage);  
+        // 생성된 마커를 마트 마커 배열에 추가합니다
+        martMarkers.push(marker);    
     }        
 }
-// 편의점 마커들의 지도 표시 여부를 설정하는 함수입니다
-function setStoreMarkers(map) {        
-    for (var i = 0; i < storeMarkers.length; i++) {  
-        storeMarkers[i].setMap(map);
+// 마트 마커들의 지도 표시 여부를 설정하는 함수입니다
+function setmartMarkers(map) {        
+    for (i = 0; i < martMarkers.length; i++) {  
+        martMarkers[i].setMap(map);
     }        
 }
-// 주차장 마커를 생성하고 주차장 마커 배열에 추가하는 함수입니다
-function createCarparkMarkers() {
-    for (var i = 0; i < carparkPositions.length; i++) {
+// 병원 마커를 생성하고 병원 마커 배열에 추가하는 함수입니다
+function createhospitalMarkers() {
+    for (var i = 0; i < hospitalPositions.length; i++) {
         var imageSize = new kakao.maps.Size(22, 26),
             imageOptions = {   
                 spriteOrigin: new kakao.maps.Point(10, 72),    
@@ -127,153 +130,279 @@ function createCarparkMarkers() {
             };       
         // 마커이미지와 마커를 생성합니다
         var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
-            marker = createMarker(carparkPositions[i], markerImage);  
-        // 생성된 마커를 주차장 마커 배열에 추가합니다
-        carparkMarkers.push(marker);        
+            marker = createMarker(hospitalPositions[i], markerImage);  
+        // 생성된 마커를 병원 마커 배열에 추가합니다
+        hospitalMarkers.push(marker);        
     }                
 }
-// 주차장 마커들의 지도 표시 여부를 설정하는 함수입니다
-function setCarparkMarkers(map) {        
-    for (var i = 0; i < carparkMarkers.length; i++) {  
-        carparkMarkers[i].setMap(map);
+// 병원 마커들의 지도 표시 여부를 설정하는 함수입니다
+function sethospitalMarkers(map) {        
+    for (var i = 0; i < hospitalMarkers.length; i++) {  
+        hospitalMarkers[i].setMap(map);
     }        
+}
+// 카페 마커를 생성하고 카페 마커 배열에 추가하는 함수입니다
+function createcafeMarkers() {
+    for (var i = 0; i < cafePositions.length; i++) {
+        var imageSize = new kakao.maps.Size(22, 26),
+            imageOptions = {   
+                spriteOrigin: new kakao.maps.Point(10, 36),    
+                spriteSize: new kakao.maps.Size(36, 98)  
+            };       
+        // 마커이미지와 마커를 생성합니다
+        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+            marker = createMarker(cafePositions[i], markerImage);  
+        // 생성된 마커를 카페 마커 배열에 추가합니다
+        cafeMarkers.push(marker);    
+    }        
+}
+// 카페 마커들의 지도 표시 여부를 설정하는 함수입니다
+function setcafeMarkers(map) {        
+    for (i = 0; i < cafeMarkers.length; i++) {  
+        cafeMarkers[i].setMap(map);
+    }        
+}
+// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+function removeMarker() {
+    housePositions = []
+    for ( var i = 0; i < houseMarkers.length; i++ ) {
+        houseMarkers[i].setMap(null);
+    }   
+    houseMarkers = [];
+}
+function conremoveMarker() {
+    hospitalPositions = []
+    for ( var i = 0; i < hospitalMarkers.length; i++ ) {
+        hospitalMarkers[i].setMap(null);
+    }   
+    hospitalMarkers = [];
+}
+function conremoveMarker2() {
+    martPositions = []
+    for ( var i = 0; i < martMarkers.length; i++ ) {
+        martMarkers[i].setMap(null);
+    }   
+    martMarkers = [];
+}
+function conremoveMarker3() {
+    cafePositions = []
+    for ( var i = 0; i < cafeMarkers.length; i++ ) {
+        cafeMarkers[i].setMap(null);
+    }   
+    cafeMarkers = [];
 }
 // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
 function changeMarker(type){
     var houseMenu = document.getElementById('houseMenu');
-    var storeMenu = document.getElementById('storeMenu');
-    var carparkMenu = document.getElementById('carparkMenu');
+    var martMenu = document.getElementById('martMenu');
+    var hospitalMenu = document.getElementById('hospitalMenu');
+    var cafeMenu = document.getElementById('cafeMenu');
     // 부동산 카테고리가 클릭됐을 때
     if (type === 'house') {
         // 부동산 카테고리를 선택된 스타일로 변경하고
         houseMenu.className = 'menu_selected';
-        // 편의점과 주차장 카테고리는 선택되지 않은 스타일로 바꿉니다
-        storeMenu.className = '';
-        carparkMenu.className = '';
+        // 마트과 병원 카테고리는 선택되지 않은 스타일로 바꿉니다
+        martMenu.className = '';
+        hospitalMenu.className = '';
+        cafeMenu.className = '';
         // 부동산 마커들만 지도에 표시하도록 설정합니다
         sethouseMarkers(map);
-        setStoreMarkers(null);
-        setCarparkMarkers(null);
-} else if (type === 'store') { // 편의점 카테고리가 클릭됐을 때
-    // 편의점 카테고리를 선택된 스타일로 변경하고
-    houseMenu.className = '';
-    storeMenu.className = 'menu_selected';
-    carparkMenu.className = '';
-    // 편의점 마커들만 지도에 표시하도록 설정합니다
-    sethouseMarkers(null);
-    setStoreMarkers(map);
-    setCarparkMarkers(null);
-} else if (type === 'carpark') { // 주차장 카테고리가 클릭됐을 때
-    // 주차장 카테고리를 선택된 스타일로 변경하고
-    houseMenu.className = '';
-    storeMenu.className = '';
-    carparkMenu.className = 'menu_selected';
-    // 주차장 마커들만 지도에 표시하도록 설정합니다
-    sethouseMarkers(null);
-    setStoreMarkers(null);
-    setCarparkMarkers(map);  
-}    
+        setmartMarkers(null);
+        sethospitalMarkers(null);
+        setcafeMarkers(null);
+    } else if (type === 'mart') { // 마트 카테고리가 클릭됐을 때
+        // 마트 카테고리를 선택된 스타일로 변경하고
+        houseMenu.className = '';
+        martMenu.className = 'menu_selected';
+        hospitalMenu.className = '';
+        cafeMenu.className = '';
+        // 마트 마커들만 지도에 표시하도록 설정합니다
+        sethouseMarkers(map);
+        setmartMarkers(map);
+        sethospitalMarkers(null);
+        setcafeMarkers(null);
+    } else if (type === 'hospital') { // 병원 카테고리가 클릭됐을 때
+        // 병원 카테고리를 선택된 스타일로 변경하고
+        houseMenu.className = '';
+        martMenu.className = '';
+        hospitalMenu.className = 'menu_selected';
+        cafeMenu.className = '';
+        // 병원 마커들만 지도에 표시하도록 설정합니다
+        sethouseMarkers(map);
+        setmartMarkers(null);
+        sethospitalMarkers(map);  
+        setcafeMarkers(null);
+    } else if (type === 'cafe') { // 카페 카테고리가 클릭됐을 때
+        // 카페 카테고리를 선택된 스타일로 변경하고
+        houseMenu.className = '';
+        martMenu.className = '';
+        hospitalMenu.className = '';
+        cafeMenu.className = 'menu_selected';
+        // 카페 마커들만 지도에 표시하도록 설정합니다
+        sethouseMarkers(map);
+        setmartMarkers(null);
+        sethospitalMarkers(null);  
+        setcafeMarkers(map);
+    } 
 } 
 </script>
-
 <div>
     <h1>검색결과</h1>
-    <table class = 'table'>
-        <thead>
-            <tr>
-                <th>주소</th>
-                <th>전월세</th>
-                <th>보증금</th>
-                <th>세</th>
-                <th>거래년도</th>
-                <th>면적</th>            
-                <th>위도</th>
-                <th>경도</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for info in solution %}
-                <tr>
-                    <td>
-                    <!-- <span onclick='req("{{info.criteria}}", "{{t1}}");location.href="{% url 'home' %}"'>{{info.address}}</span>  -->
-                    <span onclick='req("{{info.criteria}}", "{{t1}}")'>{{info.address}}</span> 
-                    </td>
+    {% for info in solution %}
+    <div class="card">
+        <div class="card-header">
+                <a class="card-link" onclick='req("{{info.criteria}}","{{info.road}}","{{t1}}", "{{naver_road}}","{{info.latitude}}", "{{info.longitude}}")' data-toggle="collapse"  href="#card{{forloop.counter}}" aria-expanded="false" style="color: #FFC107">{{info.address}}</a>
+        </div>
+        <div id="card{{forloop.counter}}" class="collapse" aria-expanded="false">
+            <div class="card-body">
+                <table class = 'table'>
+                    <thead>
+                        <tr>
+                            <th>전월세</th>
+                            <th>보증금</th>
+                            <th>세</th>
+                            <th>거래년도</th>
+                            <th>면적</th>
+                            <th>지하철 정보</th>
+                                        
+
+                        </tr>
+                    </thead>
+                <tbody>
                     <td>{{info.rent}}</td>
                     <td>{{info.deposit}}</td>
                     <td>{{info.pay}}</td>
                     <td>{{info.contract}}</td>
                     <td>{{info.size}}</td>
-                    <td>{{info.latitude}}</td>
-                    <td>{{info.longitude}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-                
-{{job1}}
-{{job2}}
-<input type='hidden' id="tableName" value='{{t1}}'>
+                    <td>{{info.station_na}}</td>
+                    <input type='hidden' id="houselat" value='{{info.latitude}}'>
+                    <input type='hidden' id="houselong" value='{{info.longitude}}'>
+                </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+    <br>
+    {% endfor %}
 
-<div id = 'dataView'>
+</div>
+
+<div id = 'dataView'>  </div>
+
+
+<input type='hidden' id="tableName" value='{{t1}}'>
+<input type='hidden' id="tableName" value='{{naver_road}}'>
+
+<div style="display: none;">
     {% if con_detail_0 %}
+        <table border="1">
         {% for de0 in con_detail_0 %}
-        <tr>
+        <tr id='one'>
             <td>{{de0.con_name}}</td>
             <td>{{de0.con_addres}}</td>
-            <td>{{de0.con_latitu}}</td>
-            <td>{{de0.con_longit}}</td>
+            <td class='lat'>{{de0.con_latitu}}</td>
+            <td class='long'>{{de0.con_longit}}</td>
         </tr>
         {% endfor %}
+        </table>
     {% endif %}
     {% if con_detail_1 %}
+        <table border="2">
         {% for de1 in con_detail_1 %}
         <tr>
             <td>{{de1.con_name}}</td>
             <td>{{de1.con_addres}}</td>
-            <td>{{de1.con_latitu}}</td>
-            <td>{{de1.con_longit}}</td>
+            <td class='lat2'>{{de1.con_latitu}}</td>
+            <td class='long2'>{{de1.con_longit}}</td>
         </tr>
         {% endfor %}
     {% endif %}
-
     {% if con_detail_2 %}
+        <table border="3">
         {% for de2 in con_detail_2 %}
         <tr>
             <td>{{de2.con_name}}</td>
             <td>{{de2.con_addres}}</td>
-            <td>{{de2.con_latitu}}</td>
-            <td>{{de2.con_longit}}</td>
+            <td class='lat3'>{{de2.con_latitu}}</td>
+            <td class='long3'>{{de2.con_longit}}</td>
         </tr>
         {% endfor %}
     {% endif %}
-
 </div>
-
-
 <script>
-    function req(v1, v2){
-        // alert(document.getElementById('tableName').value);
-    // }
-    // function loadDoc() {
-        var xhttp = new XMLHttpRequest();
-        console.log(1);
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
-                document.getElementById("dataView").innerHTML = this.responseText; 
-            }
-        };
-        console.log(2);
-        // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        // criteria = document.getElementById('criteria').value;
-        // tableName = document.getElementById('tableName').value;
-        xhttp.open("GET", "detail?criteria="+v1 + "&tableName="+v2, true);
-        console.log(3);
-        xhttp.send();
+    function dataRead(houselat, houselong){
+        removeMarker();
+        var houselatlon = new kakao.maps.LatLng(houselat, houselong);
+        housePositions.push(houselatlon)
+        createhouseMarkers();
+        changeMarker('house');
     }
     
+    // 지도 중심을 이동시키는 함수
+    function setCenter(houselat, houselong) {
+        // 이동할 위도 경도 위치를 생성합니다
+        var movelatlon = new kakao.maps.LatLng(houselat, houselong);
+        // 지도 중심을 이동시킵니다
+        map.setCenter(movelatlon);
+    }
+    let latAll = []
+    let longAll = [] 
+    function condataRead(){
+        conremoveMarker();
+        // console.log("================================");
+        var lat = document.querySelectorAll('.lat');
+        var long = document.querySelectorAll('.long');
+        for(i=0; i < lat.length; i++){
+            var data_lat = lat[i].firstChild.nodeValue;
+            var data_lng = long[i].firstChild.nodeValue;
+            hospitalPositions.push(new kakao.maps.LatLng(data_lat, data_lng));
+        }
+        createhospitalMarkers();
+        changeMarker('hospital');
+    }
+    function condataRead2(){
+        conremoveMarker2();
+        // console.log("================================");
+        var lat2 = document.querySelectorAll('.lat2');
+        var long2 = document.querySelectorAll('.long2');
+        for(i=0; i < lat2.length; i++){
+            var data_lat2 = lat2[i].firstChild.nodeValue;
+            var data_lng2 = long2[i].firstChild.nodeValue;
+            martPositions.push(new kakao.maps.LatLng(data_lat2, data_lng2));
+        }
+        createmartMarkers();
+        changeMarker('mart');
+    }
+    function condataRead3(){
+        conremoveMarker3();
+        // console.log("================================");
+        var lat3 = document.querySelectorAll('.lat3');
+        var long3 = document.querySelectorAll('.long3');
+        for(i=0; i < lat3.length; i++){
+            var data_lat3 = lat3[i].firstChild.nodeValue;
+            var data_lng3 = long3[i].firstChild.nodeValue;
+            cafePositions.push(new kakao.maps.LatLng(data_lat3, data_lng3));
+        }
+        createcafeMarkers();
+        changeMarker('cafe');
+    }
+
+
+    function req(v1, v2, v3, v4, lat, long){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                v = this.responseText;
+                document.getElementById("dataView").innerHTML = v; 
+                // condataRead();
+                dataRead(lat, long);
+                setCenter(lat, long); 
+            }
+        };
+        // console.log(2);
+        xhttp.open("GET", "detail?criteria="+v1+ '/' +v2 + "&tableName="+v3 + "&NaverRoad="+v4, true);
+        // console.log(3);
+        xhttp.send();
+    }
 </script>
-
-
 {% endblock content %}

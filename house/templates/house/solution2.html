@@ -1,0 +1,78 @@
+<div>
+    {% for info in solution %}
+    <div class="card">
+        <div class="card-header">
+                <a class="card-link"  data-toggle="collapse"  href="#card{{forloop.counter}}" aria-expanded="false" style="color: #FFC107">{{info.address}}</a>
+        </div>
+        <div id="card{{forloop.counter}}" class="collapse" aria-expanded="false">
+            <div class="card-body">
+                <table class = 'table'>
+                    <thead>
+                        <tr>
+                            <th>전월세</th>
+                            <th>보증금</th>
+                            <th>세</th>
+                            <th>거래년도</th>
+                            <th>면적</th>
+                            <th>지하철정보</th>
+                                        
+
+                        </tr>
+                    </thead>
+                <tbody>
+                    <td>{{info.rent}}</td>
+                    <td>{{info.deposit}}</td>
+                    <td>{{info.pay}}</td>
+                    <td>{{info.contract}}</td>
+                    <td>{{info.size}}</td>
+                    <td>{{info.station_na}}</td>
+                    <input type='hidden' id="houselat" value='{{info.latitude}}'>
+                    <input type='hidden' id="houselong" value='{{info.longitude}}'>
+                </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+    <br>
+    {% endfor %}
+</div>
+
+
+<div id = 'dataView'>
+{%if naver%}
+    <h1>네이버 매물</h1>
+    <table class = 'table'>
+        <thead>
+            <tr>
+                <th>주소</th>
+                <th>전월세</th>
+                <th>계약면적</th>
+                <th>전용면적</th>
+                <th>보증금</th>
+                <th>세</th>
+                <th>건물이름</th>
+                <th>층</th>
+                <th>계약일</th>
+                            
+            </tr>
+        </thead>
+        <tbody>
+        {% for n in naver %}
+            <tr>
+                <td>{{n.n_address}}</td>
+                <td>{{n.n_rent}}</td>
+                <td>{{n.n_size}}</td>
+                <td>{{n.n_size_pro}}</td>
+                <td>{{n.n_deposit}}</td>
+                <td>{{n.n_pay}}</td>
+                <td>{{n.n_name}}</td>
+                <td>{{n.n_floor}}</td>
+                <td>{{n.n_date}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+<h1>해당되는 매물이 없어요 ㅠㅠ</h1>
+{% endif %}
+</div>
