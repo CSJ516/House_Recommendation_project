@@ -76,3 +76,40 @@
 <h1>해당되는 매물이 없어요 ㅠㅠ</h1>
 {% endif %}
 </div>
+
+<div style="display: none;">
+    {% if con_detail_0 %}
+        <table border="1">
+        {% for de0 in con_detail_0 %}
+        <tr id='one'>
+            <td>{{de0.con_name}}</td>
+            <td>{{de0.con_addres}}</td>
+            <td class='lat'>{{de0.con_latitu}}</td>
+            <td class='long'>{{de0.con_longit}}</td>
+        </tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+    {% if con_detail_1 %}
+        <table border="2">
+        {% for de1 in con_detail_1 %}
+        <tr>
+            <td>{{de1.con_name}}</td>
+            <td>{{de1.con_addres}}</td>
+            <td class='lat2'>{{de1.con_latitu}}</td>
+            <td class='long2'>{{de1.con_longit}}</td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+    {% if con_detail_2 %}
+        <table border="3">
+        {% for de2 in con_detail_2 %}
+        <tr>
+            <td>{{de2.con_name}}</td>
+            <td>{{de2.con_addres}}</td>
+            <td class='lat3'>{{de2.con_latitu}}</td>
+            <td class='long3'>{{de2.con_longit}}</td>
+        </tr>
+        {% endfor %}
+    {% endif %}
+</div>
