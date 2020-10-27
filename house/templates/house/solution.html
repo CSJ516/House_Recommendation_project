@@ -1,6 +1,6 @@
+{% include 'home.html' %}
 {% block content %}
 
-{% include 'home.html' %}
 <!-- <div id="map" style="width:100%;height:500px;"></div> -->
 <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66b844040bca20e5883ec6ced3f59ede"></script> -->
 
@@ -13,38 +13,45 @@ var con2 = v[1]
 var con3 = v[2]
 </script>
 
-<div id="mapwrap"> 
-    <!-- 지도가 표시될 div -->
-    <div id="map" style="width:100%;height:500px;"></div>
-    <!-- 지도 위에 표시될 마커 카테고리 -->
-    <div class="category">
-        <ul>
-            <li id="houseMenu" onclick="changeMarker('house')">
-                <span class="ico_comm ico_house"></span>
-                부동산
-            </li>
-        {% comment %} <div id="listView"></div> {% endcomment %}
-            <div id="hospital_li" style='display:block'>
-            <li id="hospitalMenu" onclick="condataRead('hospital');">
-                <span class="ico_comm ico_store"></span>
-                <script language='javascript'>document.write(con1)</script>
-            </li>
+<div class="w3-content" style="max-width:1700px;">
+    <article>
+        <div class="w3-col m6">
+        <div class="w3-row-padding">
+        <div class="w3-col m50">
+        <div class="w3-card w3-round w3-white">
+        <div class="w3-container w3-padding">
+            <div id="mapwrap"> 
+                <!-- 지도가 표시될 div -->
+                <div id="map" style="width:800px;height:800px;"></div>
+                <!-- 지도 위에 표시될 마커 카테고리 -->
+                <div class="category">
+                    <ul>
+                        <li id="houseMenu" onclick="changeMarker('house')">
+                            <span class="ico_comm ico_house"></span>
+                            부동산
+                        </li>
+                    {% comment %} <div id="listView"></div> {% endcomment %}
+                    <div id="hospital_li" style='display:block'>
+                        <li id="hospitalMenu" onclick="condataRead('hospital');">
+                            <span class="ico_comm ico_store"></span>
+                            <script language='javascript'>document.write(con1)</script>
+                        </li>
+                    </div>
+                    <div id="mart_li" style='display:block'>
+                        <li id="martMenu" onclick="condataRead2('mart');">
+                            <span class="ico_comm ico_store"></span>
+                            <script language='javascript'>document.write(con2)</script>
+                        </li>
+                    </div>
+                    <div id="cafe_li" style='display:block'>
+                        <li id="cafeMenu" onclick="condataRead3('cafe');">
+                            <span class="ico_comm ico_store"></span>
+                            <script language='javascript'>document.write(con3)</script>
+                        </li>
+                    </div>
+                    </ul>
+                </div>
             </div>
-            <div id="mart_li" style='display:block'>
-            <li id="martMenu" onclick="condataRead2('mart');">
-                <span class="ico_comm ico_store"></span>
-                <script language='javascript'>document.write(con2)</script>
-            </li>
-            </div>
-            <div id="cafe_li" style='display:block'>
-            <li id="cafeMenu" onclick="condataRead3('cafe');">
-                <span class="ico_comm ico_store"></span>
-                <script language='javascript'>document.write(con3)</script>
-            </li>
-            </div>
-        </ul>
-    </div>
-</div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66b844040bca20e5883ec6ced3f59ede"></script>
 {% comment %} 부동산 위도,경도 {% endcomment %}
@@ -58,6 +65,7 @@ var con3 = v[2]
         {{ fac.longitude }},
     {% endfor %}
 </div>
+
 <script>
 v = '{{t1}}';
 v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '');
@@ -281,16 +289,27 @@ function changeMarker(type){
     } 
 } 
 </script>
-<div>
-    <h1>검색결과</h1>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+
+<section>
+  <nav>
+    <div class="w3-col m2" style="max-width:800px">
+        <h5><b>검색 결과</b></h5><p>
+            <tr>
     {% for info in solution %}
-    <div class="card">
-        <div class="card-header">
-                <a class="card-link" onclick='req("{{info.criteria}}","{{info.road}}","{{t1}}", "{{naver_road}}","{{info.latitude}}", "{{info.longitude}}")' data-toggle="collapse"  href="#card{{forloop.counter}}" aria-expanded="false" style="color: #FFC107">{{info.address}}</a>
+    <div class="card"  style="width:800px">
+        <div class="card-header" style="width:800px">
+                <a class="card-link" onclick='req("{{info.criteria}}","{{info.road}}","{{t1}}", "{{naver_road}}","{{info.latitude}}", "{{info.longitude}}")' data-toggle="collapse"  href="#card{{forloop.counter}}" aria-expanded="false" style="color:black; font-size:16px">{{info.address}}</a>
         </div>
-        <div id="card{{forloop.counter}}" class="collapse" aria-expanded="false">
+        <div id="card{{forloop.counter}}" class="collapse" aria-expanded="false" style="width:800px; font-size:16px">
             <div class="card-body">
-                <table class = 'table'>
+                <table class = 'table' style="width:750px; font-size:12px">
                     <thead>
                         <tr>
                             <th>전월세</th>
@@ -319,8 +338,6 @@ function changeMarker(type){
     </div>
     <br>
     {% endfor %}
-
-</div>
 
 <div id = 'dataView'>  </div>
 
@@ -364,6 +381,13 @@ function changeMarker(type){
         {% endfor %}
     {% endif %}
 </div>
+                </tr>
+        </div>
+    <br style="clear:both"/>
+    </div>
+    </nav>
+</section>
+
 <script>
     function dataRead(houselat, houselong){
         removeMarker();

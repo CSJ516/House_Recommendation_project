@@ -1,3 +1,5 @@
+<section>
+  <nav>
 <div>
     {% for info in solution %}
     <div class="card">
@@ -15,8 +17,6 @@
                             <th>거래년도</th>
                             <th>면적</th>
                             <th>지하철정보</th>
-                                        
-
                         </tr>
                     </thead>
                 <tbody>
@@ -37,45 +37,47 @@
     {% endfor %}
 </div>
 
-
-<div id = 'dataView'>
-{%if naver%}
-    <h1>네이버 매물</h1>
-    <table class = 'table'>
-        <thead>
-            <tr>
-                <th>주소</th>
-                <th>전월세</th>
-                <th>계약면적</th>
-                <th>전용면적</th>
-                <th>보증금</th>
-                <th>세</th>
-                <th>건물이름</th>
-                <th>층</th>
-                <th>계약일</th>
-                            
-            </tr>
-        </thead>
-        <tbody>
-        {% for n in naver %}
-            <tr>
-                <td>{{n.n_address}}</td>
-                <td>{{n.n_rent}}</td>
-                <td>{{n.n_size}}</td>
-                <td>{{n.n_size_pro}}</td>
-                <td>{{n.n_deposit}}</td>
-                <td>{{n.n_pay}}</td>
-                <td>{{n.n_name}}</td>
-                <td>{{n.n_floor}}</td>
-                <td>{{n.n_date}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-<h1>해당되는 매물이 없어요 ㅠㅠ</h1>
-{% endif %}
-</div>
+<div class="w3-container" style="width:800px">
+    <div class="w3-cell-row">
+        <div id = 'dataView' div class="w3-cell-row" style="max-width:800px">
+            {% if naver %}
+            <h5><b>네이버 매물</h5></b>
+            <table class = 'table' style="width:750px; font-size:12px">
+                <thead>
+                    <tr>
+                        <th>주소</th>
+                        <th>전월세</th>
+                        <th>계약면적</th>
+                        <th>전용면적</th>
+                        <th>보증금</th>
+                        <th>세</th>
+                        <th>건물이름</th>
+                        <th>층</th>
+                        <th>계약일</th>
+                                    
+                    </tr>
+                </thead>
+                <tbody>
+                {% for n in naver %}
+                    <tr>
+                        <td>{{n.n_address}}</td>
+                        <td>{{n.n_rent}}</td>
+                        <td>{{n.n_size}}</td>
+                        <td>{{n.n_size_pro}}</td>
+                        <td>{{n.n_deposit}}</td>
+                        <td>{{n.n_pay}}</td>
+                        <td>{{n.n_name}}</td>
+                        <td>{{n.n_floor}}</td>
+                        <td>{{n.n_date}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h5><b>해당되는 네이버 부동산 매물이 없어요 ㅠㅠ<h5><b>
+            {% endif %}
+        </div>
+    </div>
 
 <div style="display: none;">
     {% if con_detail_0 %}
@@ -113,3 +115,9 @@
         {% endfor %}
     {% endif %}
 </div>
+<br style="clear:both"/>
+    </div>
+    </div>
+
+    </nav>
+</section>
