@@ -5,10 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block title%}{%endblock title%}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-food.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" >
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <style>
+        body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif, 'Noto Sans KR', sans-serif}
+        .myLink {display: none}
+
+        header {
+        margin-bottom: 30px;
+        }
         #mapwrap{position:relative;overflow:hidden;}
         .category, .category *{margin:0;padding:0;color:#000;}   
         .category {position:absolute;overflow:hidden;top:10px;left:10px;width:200px;height:50px;z-index:10;border:1px solid black;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background-color:#fff;}
@@ -39,16 +54,30 @@
     </script>
 
 </head>
-<body>
+<body class="w3-light-grey">
+  <div class="w3-bar w3-food-blueberry w3-border-bottom w3-xlarge"><font size="4"><b>
+    <!--로그인한 사용자 :로그아웃, 제품목록 / 로그아웃한 사용자 : 가입, 로그인 / 공통 : 제품목록-->
+    <a href="{% url 'home' %}" class="w3-bar-item w3-button w3-text-light grey w3-hover-dark-grey"> HOME </a>
+    <a href='/admin' class="w3-bar-item w3-button w3-text-light grey w3-hover-dark-grey"> ADMIN </a>
+    <a href="{% url 'house:solution' %}" class="w3-bar-item w3-button w3-text-light grey w3-hover-dark-grey"> LIST </a>
+  </b>
+  </div>
 
-    <div class='container'>
-        <!--로그인한 사용자 :로그아웃, 제품목록 / 로그아웃한 사용자 : 가입, 로그인 / 공통 : 제품목록-->
-        <nav>
-            <a href="{% url 'home' %}"> HOME </a>
-        </nav>
+  <header class="w3-display-container w3-content w3-hide-small" style="max-width:1500px;">
+    <img src="https://lh3.googleusercontent.com/NQlHJAG2womFkaNs3HmfxPd7vMgHqJO6nBFxBFzglmgwMGwlHhxoAiJGCo8w-7NyriHGICbXys0oplzV8WsJUoD2gP6ozR-Mui64j4r1pR7D3w35i2ybh9xoWfnuVklgnC_GTO_UVdjqn-SY059Fy9JpYPlzw7vQnxIxxolxtAIoJX4vwrsVv3m_bW252hq8ssbLeOsYNCcyfHfE02fWGwqwDZ96oXKhx1bf-3Vc3CkXB2gugvumfgVjMzWG3ZTUI4E9rEWNhH5BOr7KKo1PYfI4aTCs8uasF0fN-EAe_gmvDWz6l0Ry2raqXnv5hfwh8V34cAs8e29eBFgG6ancNbIJkKqIvoA9SzYo2QqooOZIO3KL3mU8tiZJTrNx3LlUSHNxyRB9r1WSRDhbLEPc7jUVXVY5-zA8OYXGwX14XmhjT00o56BYrECVTqcHMRV1aXiaedfv9P_7_iAV7CEajQ34z6JR1-nblGZdUhq_vdymwlYBIkQu1l12cFEX3olsvrSoGusUUKJKQi3NARbzPzP2-MQIcSrvIpZ46Bc6Iia-GqAjJHl--e3Z-thWMbet1rO6LHRJyV054_4iDssfWnNfQSqCu-jnSccihQD9IWUUbhBrlbWX3QAItLWC3Gn12qseGbHjGZ13o-EaERYtQKaqeGo-Mpcz1OMZGpJHD736NstTAVh-nRY0jn-r=w1500-h450-no?authuser=0" width="1500" height="450">
+    <div class="w3-display-middle" style="width:65%">
+  </header>
+
+  <div class="w3-content" style="max-width:1500px;">
 {% block content %}
 {% endblock content %}
-    </div>
+</div>
 
 </body>
+<footer class="w3-container w3-center w3-opacity w3-margin-bottom">
+  <div class="w3-xlarge w3-padding-64">
+    <h5>Find Us On</h5>
+    <i class='fab fa-github' style='font-size:36px'></i>
+  </div>
+</footer>
 </html>

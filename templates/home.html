@@ -1,52 +1,107 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div>
+<div class="w3-content w3-margin-top" style="width:900px; font-family:Noto Sans KR">
+
     <form name="searchForm" action="{% url 'house:solution' %}" method='GET'>
         {% csrf_token %}
         <br>
-        부동산 유형 :
-        <input type="radio"  name="table" value="officetels">오피스텔
-        <input type="radio"  name="table" value="villa">빌라
-        <input type="radio"  name="table" value="one_two_room">단독다가구 
-        <br>
-        전/월세 :
-        <input type="radio"  name="input_rent" value="전세" onclick='a()'>전세
-        <input type="radio"  name="input_rent" value="월세" onclick='b()'>월세
-        <br>
-        보증금 :
-        <input type='search' id="q1" name='q1' value='{{ q1 }}'>
-        <div id="rent" style='display:none'>
-            <br>
-            월세 :
-            <input type='search' id="q2" name='q2' value='{{ q2 }}'>
+        <div class="row">
+            <div class="col">
+                <h5><b>부동산 유형</b></h5>
+                <div class="form-check", style="font-size:17px">
+                    <label class="form-check-label">
+                    <input type="radio"  name="table" class="form-check-input" value="officetels">오피스텔</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="form-check-label">
+                    <input type="radio"  name="table" class="form-check-input" value="villa">빌라</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="form-check-label">
+                    <input type="radio"  name="table" class="form-check-input" value="one_two_room">단독다가구</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
+            <div class="col">
+                <h5><b>전/월세</b></h5>
+                <div class="form-check", style="font-size:17px">
+                    <label class="form-check-label">
+                    <input type="radio"  name="input_rent" class="form-check-input" value="전세" onclick='a()'>전세</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio"  name="input_rent" class="form-check-input" value="월세" onclick='b()'>월세</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
         </div>
         <br>
-        직장주소 :
-        <input type='search' id='q3' name='q3' value='{{ q3 }}'>
-        <ul id="id_tags">
-        <li>
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="병원">
-             병원
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="마트">
-             마트
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="패스트푸드">
-             패스트푸드
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="카페">
-             카페
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="문화시설">
-             문화시설
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="편의점">
-             편의점
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="세탁소">
-             세탁소
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="다이소">
-             다이소
-            <input onclick="CountChecked(this)" type="checkbox"  name="con_input" value="실내운동시설">
-             실내운동시설
-        </li>
-        </ul>
-        <button onclick="ConditionCheck()"> 검색</button> 
+        <br>
+        <div class="row">
+            <div class="col">
+                <h5><b>보증금</h5></b>
+                <p>
+                <input type='search' id="q1" class="form-control" placeholder="만원 단위로 입력하세요(1000만원인 경우 1000)" name='q1' value='{{ q1 }}'>
+            </div>
+            <div class="col">
+                <div id="rent" style='display:none'>
+                <h5><b>월세</h5></b>
+                <input type='search' id="q2" class="form-control" placeholder="만원 단위로 입력하세요(40만원인 경우 40)" name='q2' value='{{ q2 }}'>
+                </div>
+            </div>
+        </div>
+        <br>
+        <h5><b>직장주소</h5></b>
+        <input type='search' id='q3' class="form-control" placeholder="(ex. 서울특별시 서초구 효령로)" name='q3' value='{{ q3 }}' style="max-width:1000px">
+        <br>
+        <p>
+        <div class="row">
+            <div class="col" style="max-width:105px;">
+                <h5><b>편의시설</b></h5>
+            </div>
+            <div class="cell" style="font-size:15px">
+                3개까지 선택
+            </div>
+        </div>
+            <div class="form-check" style="font-size:17px">
+                <div class="row">
+                    <div class="col" style="max-width:110px;">
+                    <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="병원">
+                    병원
+                    </div>
+                    <div class="col" style="max-width:110px;">
+                    <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="마트">
+                    마트
+                    </div>
+                    <div class="col" style="max-width:150px;">
+                    <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="패스트푸드">
+                    패스트푸드
+                    </div>
+                    <div class="col" style="max-width:110px;">
+                    <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="카페">
+                    카페
+                    </div>
+                </div>
+            </div>
+            <div class="form-check" style="font-size:17px">
+                <div class="row">
+                    <div class="col" style="max-width:110px;">
+                        <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="문화시설">
+                        문화시설
+                    </div>
+                    <div class="col" style="max-width:110px;">
+                        <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="편의점">
+                        편의점
+                    </div>
+                    <div class="col" style="max-width:150px;">
+                        <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="세탁소">
+                        세탁소
+                    </div>
+                    <div class="col" style="max-width:110px;">
+                        <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="다이소">
+                        다이소
+                    </div>
+                    <div class="col" style="max-width:160px;"
+                        <input onclick="CountChecked(this)" type="checkbox" class="form-check-input"  name="con_input" value="실내운동시설">
+                        실내운동시설
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-secondary btn-lg "><i class="fa fa-search"></i>  검색</button> 
     </form>
 </div>
 

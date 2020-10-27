@@ -1,7 +1,6 @@
 {% block content %}
 
 {% include 'home.html' %}
-
 <!-- <div id="map" style="width:100%;height:500px;"></div> -->
 <!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66b844040bca20e5883ec6ced3f59ede"></script> -->
 
@@ -48,7 +47,6 @@ var con3 = v[2]
 </div>
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=66b844040bca20e5883ec6ced3f59ede"></script>
-
 {% comment %} 부동산 위도,경도 {% endcomment %}
 <div id="facility_lat" style="display: none">
     {% for fac in solution %}
@@ -60,7 +58,6 @@ var con3 = v[2]
         {{ fac.longitude }},
     {% endfor %}
 </div>
-
 <script>
 v = '{{t1}}';
 v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '');
@@ -200,7 +197,6 @@ function setcafeMarkers(map) {
         cafeMarkers[i].setMap(map);
     }        
 }
-
 // 지도 위에 표시되고 있는 마커를 모두 제거합니다
 function removeMarker() {
     housePositions = []
@@ -230,14 +226,12 @@ function conremoveMarker3() {
     }   
     cafeMarkers = [];
 }
-
 // 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
 function changeMarker(type){
     var houseMenu = document.getElementById('houseMenu');
     var martMenu = document.getElementById('martMenu');
     var hospitalMenu = document.getElementById('hospitalMenu');
     var cafeMenu = document.getElementById('cafeMenu');
-
     // 부동산 카테고리가 클릭됐을 때
     if (type === 'house') {
         // 부동산 카테고리를 선택된 스타일로 변경하고
@@ -287,47 +281,54 @@ function changeMarker(type){
     } 
 } 
 </script>
-
 <div>
     <h1>검색결과</h1>
-    <table class = 'table'>
-        <thead>
-            <tr>
-                <th>주소</th>
-                <th>전월세</th>
-                <th>보증금</th>
-                <th>세</th>
-                <th>거래년도</th>
-                <th>면적</th>            
-                <th>위도</th>
-                <th>경도</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for info in solution %}
-                <tr>
-                    <td>
-                    <!-- <span onclick='req("{{info.criteria}}", "{{t1}}");location.href="{% url 'home' %}"'>{{info.address}}</span>  -->
-                    {% comment %} <span onclick='req("{{info.criteria}}", "{{t1}}")'>{{info.address}}</span>  {% endcomment %}
-                    <span id="addressClick" onclick='req("{{info.criteria}}", "{{t1}}", "{{info.latitude}}", "{{info.longitude}}")'>{{info.address}}</span> 
-                    </td>
+    {% for info in solution %}
+    <div class="card">
+        <div class="card-header">
+                <a class="card-link" onclick='req("{{info.criteria}}","{{info.road}}","{{t1}}", "{{naver_road}}","{{info.latitude}}", "{{info.longitude}}")' data-toggle="collapse"  href="#card{{forloop.counter}}" aria-expanded="false" style="color: #FFC107">{{info.address}}</a>
+        </div>
+        <div id="card{{forloop.counter}}" class="collapse" aria-expanded="false">
+            <div class="card-body">
+                <table class = 'table'>
+                    <thead>
+                        <tr>
+                            <th>전월세</th>
+                            <th>보증금</th>
+                            <th>세</th>
+                            <th>거래년도</th>
+                            <th>면적</th>
+                            <th>지하철 정보</th>
+                                        
+
+                        </tr>
+                    </thead>
+                <tbody>
                     <td>{{info.rent}}</td>
                     <td>{{info.deposit}}</td>
                     <td>{{info.pay}}</td>
                     <td>{{info.contract}}</td>
                     <td>{{info.size}}</td>
-                    <td id="houselat">{{info.latitude}}</td>
-                    <td id="houselong">{{info.longitude}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    <td>{{info.station_na}}</td>
+                    <input type='hidden' id="houselat" value='{{info.latitude}}'>
+                    <input type='hidden' id="houselong" value='{{info.longitude}}'>
+                </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+    <br>
+    {% endfor %}
+
 </div>
 
-{{job1}}
-{{job2}}
+<div id = 'dataView'>  </div>
+
+
 <input type='hidden' id="tableName" value='{{t1}}'>
-<div id = 'dataView'>
+<input type='hidden' id="tableName" value='{{naver_road}}'>
+
+<div style="display: none;">
     {% if con_detail_0 %}
         <table border="1">
         {% for de0 in con_detail_0 %}
@@ -363,13 +364,11 @@ function changeMarker(type){
         {% endfor %}
     {% endif %}
 </div>
-
 <script>
     function dataRead(houselat, houselong){
         removeMarker();
         var houselatlon = new kakao.maps.LatLng(houselat, houselong);
         housePositions.push(houselatlon)
-
         createhouseMarkers();
         changeMarker('house');
     }
@@ -381,7 +380,6 @@ function changeMarker(type){
         // 지도 중심을 이동시킵니다
         map.setCenter(movelatlon);
     }
-
     let latAll = []
     let longAll = [] 
     function condataRead(){
@@ -389,50 +387,42 @@ function changeMarker(type){
         // console.log("================================");
         var lat = document.querySelectorAll('.lat');
         var long = document.querySelectorAll('.long');
-
         for(i=0; i < lat.length; i++){
             var data_lat = lat[i].firstChild.nodeValue;
             var data_lng = long[i].firstChild.nodeValue;
-
             hospitalPositions.push(new kakao.maps.LatLng(data_lat, data_lng));
         }
         createhospitalMarkers();
         changeMarker('hospital');
     }
-
     function condataRead2(){
         conremoveMarker2();
         // console.log("================================");
         var lat2 = document.querySelectorAll('.lat2');
         var long2 = document.querySelectorAll('.long2');
-
         for(i=0; i < lat2.length; i++){
             var data_lat2 = lat2[i].firstChild.nodeValue;
             var data_lng2 = long2[i].firstChild.nodeValue;
-
             martPositions.push(new kakao.maps.LatLng(data_lat2, data_lng2));
         }
         createmartMarkers();
         changeMarker('mart');
     }
-
     function condataRead3(){
         conremoveMarker3();
         // console.log("================================");
         var lat3 = document.querySelectorAll('.lat3');
         var long3 = document.querySelectorAll('.long3');
-
         for(i=0; i < lat3.length; i++){
             var data_lat3 = lat3[i].firstChild.nodeValue;
             var data_lng3 = long3[i].firstChild.nodeValue;
-
             cafePositions.push(new kakao.maps.LatLng(data_lat3, data_lng3));
         }
         createcafeMarkers();
         changeMarker('cafe');
     }
 
-    function req(v1, v2, lat, long){
+    function req(v1, v2, v3, v4, lat, long){
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -440,14 +430,13 @@ function changeMarker(type){
                 document.getElementById("dataView").innerHTML = v; 
                 // condataRead();
                 dataRead(lat, long);
-                setCenter(lat, long);
+                setCenter(lat, long); 
             }
         };
         // console.log(2);
-        xhttp.open("GET", "detail?criteria="+v1 + "&tableName="+v2, true);
+        xhttp.open("GET", "detail?criteria="+v1+ '/' +v2 + "&tableName="+v3 + "&NaverRoad="+v4, true);
         // console.log(3);
         xhttp.send();
     }
 </script>
-
 {% endblock content %}

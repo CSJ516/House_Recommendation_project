@@ -2,7 +2,7 @@ from django.db import connection
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from house.models import Officetels, OneTwoRoom, Villa, Speed, Cafe, Convenience, Culture, Daiso, Fastfood, Health, Hospital, Laundry, Market
+from house.models import Officetels, OneTwoRoom, Villa, Speed, Cafe, Convenience, Culture, Daiso, Fastfood, Health, Hospital, Laundry, Market, NaverPropertyFinal
 import psycopg2
 import requests
 from urllib.parse import urlparse
@@ -33,26 +33,22 @@ def latlon(address):
     return gu_speed, val # 직장의 위치, 직장의 위도 경도
 
         
-def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data):
+def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data, naver_road):
     print('score')
     num = len(input_con)
     for i in range(num): # 편의시설의 개수만큼 for문 진행 
         if input_con[i] == '병원':
             globals()['con_{}'.format(i)] = 'hos_num'
             globals()['stand_{}'.format(i)] = 5
-            globals()['table_con_{}'.format(i)] = 'hospital'
         elif input_con[i] == '마트':
             globals()['con_{}'.format(i)] = 'mart_num'
             globals()['stand_{}'.format(i)] = 2
-            globals()['table_con_{}'.format(i)] = 'market'
         elif input_con[i] == '패스트푸드':
             globals()['con_{}'.format(i)] = 'fast_num'
             globals()['stand_{}'.format(i)] = 2
-            globals()['table_con_{}'.format(i)] = 'fastfood'
         elif input_con[i] == '카페':
             globals()['con_{}'.format(i)] = 'cafe_num'
             globals()['stand_{}'.format(i)] = 3
-            globals()['table_con_{}'.format(i)] = 'cafe'
         elif input_con[i] == '문화시설':
             globals()['con_{}'.format(i)] = 'cul_num'
             globals()['stand_{}'.format(i)] = 5
@@ -60,26 +56,21 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
         elif input_con[i] == '편의점':
             globals()['con_{}'.format(i)] = 'con_num'
             globals()['stand_{}'.format(i)] = 10
-            globals()['table_con_{}'.format(i)] = 'convenience'
         elif input_con[i] == '세탁소':
             globals()['con_{}'.format(i)] = 'laun_num'
             globals()['stand_{}'.format(i)] = 7
-            globals()['table_con_{}'.format(i)] = 'laundry'
         elif input_con[i] == '다이소':
             globals()['con_{}'.format(i)] = 'da_num'
             globals()['stand_{}'.format(i)] = 2
-            globals()['table_con_{}'.format(i)] = 'daiso'
         elif input_con[i] == '실내운동시설':
             globals()['con_{}'.format(i)] = 'gym_num'
             globals()['stand_{}'.format(i)] = 4
-            globals()['table_con_{}'.format(i)] = 'health'
-
     if num == 3:
         solution = data.objects.raw(f"WITH FIRST AS( \
                             SELECT * \
                             FROM \
-                                (SELECT gid,address, rent, deposit::integer, pay::integer, latitude::float, \
-                                longitude::float, area,size,contract, criteria, recent,station_ar, transfer,\
+                                (SELECT gid,address, rent, deposit::integer, pay::integer, road,latitude::float, \
+                                longitude::float, area,size,contract, criteria, recent,station_ar, station_na, transfer,\
                             {con_0},{con_1},{con_2}, \
                             (CASE WHEN {con_0} >= {stand_0} THEN 30 ELSE (30 / {stand_0} * {con_0})::float END) AS con0, \
                             (CASE WHEN {con_1} >= {stand_1} THEN 30 ELSE (30 / {stand_1} * {con_1})::float END) AS con1, \
@@ -92,20 +83,20 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                                 FROM {table} \
                                 WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                                 and pay <= '{input_pay}' and recent = 1) as r) \
-                            SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria, km/{gu} as distance,\
+                            SELECT gid,address, rent, deposit, pay, latitude, longitude,road, size,contract,criteria, km/{gu} as distance,station_na,\
                             ((con0 + con1 + con2 + 10)/10 + (st1 + st2)/20 + time/10) as score\
                             From (SELECT *, \
                                     (CASE WHEN km/{gu} <= 10 THEN 100 \
                                         WHEN km/{gu} between 10 and 90 THEN (100 - km/{gu}) ELSE 0 END) as time\
                                 FROM FIRST) as k \
-                            ORDER BY score desc LIMIT 10;")
+                            ORDER BY score desc LIMIT 10;") 
     
     elif num == 2:
         solution = data.objects.raw(f"WITH FIRST AS( \
                     SELECT * \
                     FROM \
-                        (SELECT gid,address, rent, deposit::integer, pay::integer, latitude::float, \
-                        longitude::float, size,contract,area, criteria, recent,station_ar, transfer,\
+                        (SELECT gid,address, rent, deposit::integer, pay::integer, latitude::float, road,\
+                        longitude::float, size,contract,area, criteria, recent,station_ar, station_na, transfer,\
                        {con_0},{con_1},\
                        (CASE WHEN {con_0} >= {stand_0} THEN 50 ELSE (50 / {stand_0} * {con_0})::float END) AS con0, \
                        (CASE WHEN {con_1} >= {stand_1} THEN 50 ELSE (50 / {stand_1} * {con_1})::float END) AS con1, \
@@ -117,7 +108,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                         FROM {table} \
                         WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                         and pay <= '{input_pay}' and recent = 1) as r) \
-                    SELECT gid,address, rent, deposit, pay, latitude, size,contract,longitude, criteria, km/{gu} as distance,\
+                    SELECT gid,address, rent, deposit, pay, latitude, size,contract,longitude, criteria, road, station_na, km/{gu} as distance,\
                     ((con0 + con1)/10 + (st1 + st2)/20 + time/10) as score\
                     From (SELECT *, \
                             (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -130,7 +121,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                     SELECT * \
                     FROM \
                         (SELECT gid,address, rent, deposit::integer, pay::integer, latitude::float, \
-                        longitude::float, area, criteria, size,contract,recent,station_ar, transfer,\
+                        longitude::float, area, criteria, size,contract,recent,station_ar, station_na, road,transfer,\
                        {con_0},\
                        (CASE WHEN {con_0} >= {stand_0} THEN 100 ELSE (100 / {stand_0} * {con_0})::float END) AS con0, \
                        (CASE WHEN station_ar = 2 THEN 50 \
@@ -141,7 +132,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                         FROM {table} \
                         WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                         and pay <= '{input_pay}' and recent = 1) as r) \
-                    SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria, km/{gu} as distance,\
+                    SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria, station_na, road,km/{gu} as distance,\
                     (con0 /10 + (st1 + st2)/20 + time/10) as score \
                     From (SELECT *, \
                             (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -154,7 +145,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                     SELECT * \
                     FROM \
                         (SELECT gid,address, rent, deposit::integer, pay::integer, latitude::float, \
-                        longitude::float, area,size,contract, criteria, recent,station_ar, transfer,\
+                        longitude::float, area,size,contract, criteria, recent,station_ar, station_na, road, transfer,\
                     (CASE WHEN station_ar = 2 THEN 50 \
                             WHEN station_ar = 1 THEN 30 ELSE 10 END) as st1,\
                     (CASE WHEN transfer = 1 THEN 50 ELSE 10 END) as st2, \
@@ -163,7 +154,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                         FROM {table} \
                         WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                         and pay <= '{input_pay}' and recent = 1) as r) \
-                    SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria, km/{gu} as distance,\
+                    SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria,station_na, road, km/{gu} as distance,\
                     ((st1 + st2)/20 + time/10) as score \
                     From (SELECT *, \
                             (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -173,12 +164,15 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
     job_1 = float(job[0])
     job_2 = float(job[1])
 
-    return render(request,'house/solution.html', {'solution':solution, 't1':input_con,'job_1':job_1,'job_2':job_2})
+    return render(request,'house/solution.html', {'solution':solution, 't1':input_con,'job_1':job_1,'job_2':job_2,'naver_road':naver_road})
 
 def detail(request):
-    criteria = request.GET['criteria']
+    criteria = request.GET['criteria'].split('/')
     tableName = request.GET['tableName']
-    print(criteria, tableName)
+    NaverRoad = request.GET['NaverRoad']
+    road = criteria[1]
+    criteria = criteria[0]
+    print(criteria, tableName, road, NaverRoad)
     tableName = tableName.strip("[]").split(",")
     num = len(tableName)
     for i in range(num): # 편의시설의 개수만큼 for문 진행\
@@ -211,19 +205,22 @@ def detail(request):
         elif place == '실내운동시설':
             con_data = 'health'
             sub_data = Health
-        print(con_data, sub_data)
         detail = sub_data.objects.raw(f"SELECT gid, criteria, con_name, con_addres, con_latitu, con_longit \
                 FROM {con_data} \
                 WHERE criteria = '{criteria}';")
         globals()['detail_{}'.format(i)] = detail
-   
+        naver = NaverPropertyFinal.objects.raw(f"SELECT gid, n_address,n_rent,n_size,n_size_pro,n_deposit,n_pay,n_name,n_floor, n_date \
+                    FROM naver_property_final \
+                    WHERE {NaverRoad} = '{road}';")
     if num == 3:
         print('a')
-        return render(request,'house/solution.html', {'con_detail_0':detail_0, 'con_detail_1':detail_1,'con_detail_2':detail_2, 'num':num})
+        return render(request,'house/solution2.html', {'con_detail_0':detail_0, 'con_detail_1':detail_1,'con_detail_2':detail_2, 'naver':naver})
     elif num == 2:
-        return render(request,'house/solution.html', {'con_detail_0':detail_0, 'con_detail_1':detail_1})
+        print('b')
+        return render(request,'house/solution2.html', {'con_detail_0':detail_0, 'con_detail_1':detail_1, 'naver':naver})
     elif num == 1:
-        return render(request,'house/solution.html', {'con_detail_0':detail_0})    
+        print('c')
+        return render(request,'house/solution2.html', {'con_detail_0':detail_0, 'naver':naver})    
 
 
 def solution(request):
@@ -244,11 +241,14 @@ def solution(request):
         # 집유형에 따라 해당되는 {table} 도출
         if table == 'officetels':
             data = Officetels
+            naver_road = 'n_road'
         elif table == 'villa':
             data = Villa
+            naver_road = 'n_road'
         elif table == 'one_two_room':
             data = OneTwoRoom
+            naver_road = 'n_road_some'
         gu, job = latlon(address)
-        return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data)
+        return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data, naver_road)
     except:
-         return render(request,'home.html')
+        return render(request,'home.html')
