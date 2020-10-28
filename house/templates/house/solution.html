@@ -121,10 +121,10 @@ function createMarker(position, image) {
 // 부동산 마커를 생성하고 부동산 마커 배열에 추가하는 함수입니다
 function createhouseMarkers() {
     for (var i = 0; i < housePositions.length; i++) {  
-        var imageSize = new kakao.maps.Size(22, 26),
+        var imageSize = new kakao.maps.Size(42, 45),
             imageOptions = {  
                 spriteOrigin: new kakao.maps.Point(10,0),    
-                spriteSize: new kakao.maps.Size(36,98)  
+                spriteSize: new kakao.maps.Size(55,130)
             };     
         // 마커이미지와 마커를 생성합니다
         var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
