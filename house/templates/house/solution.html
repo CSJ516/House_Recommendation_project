@@ -92,7 +92,7 @@ for(var idx=0; idx<list_lat.length; idx++){
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
     mapOption = { 
         center: new kakao.maps.LatLng({{job_1}}, {{job_2}}), // 지도의 중심좌표 
-        level: 5 // 지도의 확대 레벨 
+        level: 7 // 지도의 확대 레벨 
     }; 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
@@ -327,8 +327,9 @@ function changeMarker(type){
                     <td>{{info.deposit}}</td>
                     <td>{{info.pay}}</td>
                     <td>{{info.contract}}</td>
-                    <td>{{info.size}}</td>
+                    <td>{{info.sizes}}</td>
                     <td>{{info.station_na}}</td>
+
                     <input type='hidden' id="houselat" value='{{info.latitude}}'>
                     <input type='hidden' id="houselong" value='{{info.longitude}}'>
                 </tbody>
@@ -400,9 +401,11 @@ function changeMarker(type){
     // 지도 중심을 이동시키는 함수
     function setCenter(houselat, houselong) {
         // 이동할 위도 경도 위치를 생성합니다
+        
         var movelatlon = new kakao.maps.LatLng(houselat, houselong);
-        // 지도 중심을 이동시킵니다
         map.setCenter(movelatlon);
+        
+
     }
     let latAll = []
     let longAll = [] 
