@@ -6,7 +6,7 @@
 
 <script>
 v = '{{t1}}';
-v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '');
+v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '').replaceAll("'",'');
 v = v.split(',');
 var con1 = v[0]
 var con2 = v[1]
@@ -67,15 +67,16 @@ var con3 = v[2]
 </div>
 
 <script>
-v = '{{t1}}';
-v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '');
-v = v.split(',');
-if (v.length == 2) {
-    document.getElementById('cafe_li').style.display='none';
-} else if (v.length == 1) {
+if (Object.keys(con1).length == 0) {
+    document.getElementById('hospital_li').style.display='none';
     document.getElementById('mart_li').style.display='none';
     document.getElementById('cafe_li').style.display='none';
-}
+} else if (con2 === undefined) {
+    document.getElementById('mart_li').style.display='none';
+    document.getElementById('cafe_li').style.display='none';
+} else if (con3 === undefined) {
+    document.getElementById('cafe_li').style.display='none';
+};
 
 // <script type="text/javascript">
 var list_lat = document.getElementById("facility_lat").innerText.split(',');
