@@ -402,12 +402,16 @@ function changeMarker(type){
     // 지도 중심을 이동시키는 함수
     function setCenter(houselat, houselong) {
         // 이동할 위도 경도 위치를 생성합니다
-        
         var movelatlon = new kakao.maps.LatLng(houselat, houselong);
         map.setCenter(movelatlon);
-        
 
+        // 지도를 확대합니다
+        var level = map.getLevel();
+        if (level == 7) {
+            map.setLevel(level - 4);
+        }
     }
+
     let latAll = []
     let longAll = [] 
     function condataRead(){
