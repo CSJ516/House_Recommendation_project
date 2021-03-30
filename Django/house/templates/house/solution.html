@@ -6,7 +6,7 @@
 
 <script>
 v = '{{t1}}';
-v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '');
+v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '').replaceAll("'",'');
 v = v.split(',');
 var con1 = v[0]
 var con2 = v[1]
@@ -67,15 +67,16 @@ var con3 = v[2]
 </div>
 
 <script>
-v = '{{t1}}';
-v = v.replaceAll("&#x27;" ,  "").replaceAll('[', '').replaceAll(']', '');
-v = v.split(',');
-if (v.length == 2) {
-    document.getElementById('cafe_li').style.display='none';
-} else if (v.length == 1) {
+if (Object.keys(con1).length == 0) {
+    document.getElementById('hospital_li').style.display='none';
     document.getElementById('mart_li').style.display='none';
     document.getElementById('cafe_li').style.display='none';
-}
+} else if (con2 === undefined) {
+    document.getElementById('mart_li').style.display='none';
+    document.getElementById('cafe_li').style.display='none';
+} else if (con3 === undefined) {
+    document.getElementById('cafe_li').style.display='none';
+};
 
 // <script type="text/javascript">
 var list_lat = document.getElementById("facility_lat").innerText.split(',');
@@ -92,7 +93,7 @@ for(var idx=0; idx<list_lat.length; idx++){
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
     mapOption = { 
         center: new kakao.maps.LatLng({{job_1}}, {{job_2}}), // 지도의 중심좌표 
-        level: 5 // 지도의 확대 레벨 
+        level: 7 // 지도의 확대 레벨 
     }; 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
@@ -327,8 +328,9 @@ function changeMarker(type){
                     <td>{{info.deposit}}</td>
                     <td>{{info.pay}}</td>
                     <td>{{info.contract}}</td>
-                    <td>{{info.size}}</td>
+                    <td>{{info.sizes}}</td>
                     <td>{{info.station_na}}</td>
+
                     <input type='hidden' id="houselat" value='{{info.latitude}}'>
                     <input type='hidden' id="houselong" value='{{info.longitude}}'>
                 </tbody>
@@ -401,9 +403,15 @@ function changeMarker(type){
     function setCenter(houselat, houselong) {
         // 이동할 위도 경도 위치를 생성합니다
         var movelatlon = new kakao.maps.LatLng(houselat, houselong);
-        // 지도 중심을 이동시킵니다
         map.setCenter(movelatlon);
+
+        // 지도를 확대합니다
+        var level = map.getLevel();
+        if (level == 7) {
+            map.setLevel(level - 4);
+        }
     }
+
     let latAll = []
     let longAll = [] 
     function condataRead(){

@@ -83,7 +83,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                                 FROM {table} \
                                 WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                                 and pay <= '{input_pay}' and recent = 1) as r) \
-                            SELECT gid,address, rent, deposit, pay, latitude, longitude,road, size,contract,criteria, km/{gu} as distance,station_na,\
+                            SELECT gid,address, rent, deposit, pay, latitude, longitude,road, round(size,2) as sizes,contract,criteria, km/{gu} as distance,station_na,\
                             ((con0 + con1 + con2 + 10)/10 + (st1 + st2)/20 + time/10) as score\
                             From (SELECT *, \
                                     (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -108,7 +108,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                         FROM {table} \
                         WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                         and pay <= '{input_pay}' and recent = 1) as r) \
-                    SELECT gid,address, rent, deposit, pay, latitude, size,contract,longitude, criteria, road, station_na, km/{gu} as distance,\
+                    SELECT gid,address, rent, deposit, pay, latitude, round(size,2) as sizes,contract,longitude, criteria, road, station_na, km/{gu} as distance,\
                     ((con0 + con1)/10 + (st1 + st2)/20 + time/10) as score\
                     From (SELECT *, \
                             (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -132,7 +132,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                         FROM {table} \
                         WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                         and pay <= '{input_pay}' and recent = 1) as r) \
-                    SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria, station_na, road,km/{gu} as distance,\
+                    SELECT gid,address, rent, deposit, pay, latitude, longitude, round(size,2) as sizes,contract,criteria, station_na, road,km/{gu} as distance,\
                     (con0 /10 + (st1 + st2)/20 + time/10) as score \
                     From (SELECT *, \
                             (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -154,7 +154,7 @@ def score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, da
                         FROM {table} \
                         WHERE rent='{input_rent}' and deposit <= '{input_deposit}' \
                         and pay <= '{input_pay}' and recent = 1) as r) \
-                    SELECT gid,address, rent, deposit, pay, latitude, longitude, size,contract,criteria,station_na, road, km/{gu} as distance,\
+                    SELECT gid,address, rent, deposit, pay, latitude, longitude, round(size,2) as sizes,contract,criteria,station_na, road, km/{gu} as distance,\
                     ((st1 + st2)/20 + time/10) as score \
                     From (SELECT *, \
                             (CASE WHEN km/{gu} <= 10 THEN 100 \
@@ -174,7 +174,11 @@ def detail(request):
     criteria = criteria[0]
     print(criteria, tableName, road, NaverRoad)
     tableName = tableName.strip("[]").split(",")
+    print(tableName)
     num = len(tableName)
+    if tableName == ['']:
+        num = 0
+    
     for i in range(num): # 편의시설의 개수만큼 for문 진행\
         place = re.findall(r'"\s*([^"]*?)\s*"', str(tableName))[i][1:-1]
         print(place)
@@ -209,7 +213,7 @@ def detail(request):
                 FROM {con_data} \
                 WHERE criteria = '{criteria}';")
         globals()['detail_{}'.format(i)] = detail
-        naver = NaverPropertyFinal.objects.raw(f"SELECT gid, n_address,n_rent,n_size,n_size_pro,n_deposit,n_pay,n_name,n_floor, n_date \
+    naver = NaverPropertyFinal.objects.raw(f"SELECT gid, n_address,n_rent,round(n_size,2) as n_sizes,round(n_size_pro,2) as n_size_pros ,n_deposit,n_pay,n_name,n_floor, n_date \
                     FROM naver_property_final \
                     WHERE {NaverRoad} = '{road}';")
     if num == 3:
@@ -220,7 +224,9 @@ def detail(request):
         return render(request,'house/solution2.html', {'con_detail_0':detail_0, 'con_detail_1':detail_1, 'naver':naver})
     elif num == 1:
         print('c')
-        return render(request,'house/solution2.html', {'con_detail_0':detail_0, 'naver':naver})    
+        return render(request,'house/solution2.html', {'con_detail_0':detail_0, 'naver':naver})
+    else:
+        return render(request,'house/solution2.html', {'naver':naver})   
 
 
 def solution(request):
@@ -247,7 +253,7 @@ def solution(request):
             naver_road = 'n_road'
         elif table == 'one_two_room':
             data = OneTwoRoom
-            naver_road = 'n_road_some'
+            naver_road = 'n_road_som'
         gu, job = latlon(address)
         return score(request,input_rent,input_deposit,input_con,gu, job,input_pay,table, data, naver_road)
     except:
