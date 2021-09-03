@@ -22,3 +22,5 @@ jupyter notebook, QGIS, PostgreSQL, Django 등의 프로그램을 사용하였�
 - 사용자가 부동산 유형, 전/월세, 예산, 직장주소, 편의시설 조건 선택
 - SQL 구문으로 조건에 따른 부동산 매물별 점수 계산
 - 점수가 높은 부동산 및 주변 편의시설, 관련 네이버 매물을 지도상으로 표시
+
+<img width="720" alt="바로방" src="https://user-images.githubusercontent.com/60870945/131973301-8c2c31e8-71e0-47a7-80cd-0246db704556.png">
